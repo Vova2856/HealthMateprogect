@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HealthMate — AI помічник</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>HealthMate</h1>
+    <p class="small">Введи свої симптоми (наприклад: "кашель, нежить, голова болить")</p>
+
+    <textarea id="symptoms" placeholder="Опиши симптоми..." rows="4"></textarea>
+    <div class="controls">
+      <button id="askBtn">Отримати пораду</button>
+      <button id="clearHistoryBtn">Очистити історію</button>
+    </div>
+
+    <div id="result" class="card hidden"></div>
+
+    <h2>Історія</h2>
+    <ul id="history"></ul>
+
+    <footer>
+      <small>HealthMate — не замінює лікаря. Якщо стан важкий — звертайся одразу.</small>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
