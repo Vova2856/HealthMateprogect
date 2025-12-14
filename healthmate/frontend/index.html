@@ -1,32 +1,49 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>HealthMate — AI помічник</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthMate AI</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>HealthMate</h1>
-    <p class="small">Введи свої симптоми (наприклад: "кашель, нежить, голова болить")</p>
 
-    <textarea id="symptoms" placeholder="Опиши симптоми..." rows="4"></textarea>
-    <div class="controls">
-      <button id="askBtn">Отримати пораду</button>
-      <button id="clearHistoryBtn">Очистити історію</button>
+<div class="bg"></div>
+
+<div class="app">
+  <aside class="sidebar">
+    <h2>Меню</h2>
+    <button id="sendBtn">Надіслати</button>
+    <button id="clearBtn" class="ghost">Очистити текст</button>
+    <button id="copyBtn" class="ghost">Скопіювати історію</button>
+    <button id="settingsBtn" class="ghost">Налаштування</button>
+    <button id="aboutBtn" class="ghost">Про додаток</button>
+  </aside>
+
+  <main class="main-content">
+    <div class="header">
+      <h1>HealthMate <span>AI</span></h1>
+      <p>Твій персональний AI-помічник зі здоров’я</p>
     </div>
 
-    <div id="result" class="card hidden"></div>
+    <div class="card">
+      <label for="userInput">Опиши свої симптоми:</label>
+      <textarea id="userInput" placeholder="Напиши тут..."></textarea>
+    </div>
 
-    <h2>Історія</h2>
-    <ul id="history"></ul>
+    <div class="history-card">
+      <h3>Відповідь AI</h3>
+      <div id="chatContainer">
+        <div id="aiTempDiv"></div>
+        <h3>Історія</h3>
+        <ul id="history"></ul>
+      </div>
+    </div>
+  </main>
+</div>
 
-    <footer>
-      <small>HealthMate — не замінює лікаря. Якщо стан важкий — звертайся одразу.</small>
-    </footer>
-  </div>
+<footer>© 2025 HealthMate AI</footer>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
