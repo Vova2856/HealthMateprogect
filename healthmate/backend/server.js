@@ -9,7 +9,7 @@ import { fileURLToPath } from "url";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const dirname = path.dirname(filename);
 
 const app = express();
 app.use(cors());
@@ -17,15 +17,11 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-if (!process.env.OPENAI_API_KEY) {
-  console.warn("⚠️ OPENAI_API_KEY не заданий");
-}
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || ""
 });
 
-const frontendPath = path.join(__dirname, "frontend");
+const frontendPath = path.join(__dirname, "../frontend");
 app.use(express.static(frontendPath));
 
 function isMedical(text = "") {
@@ -64,7 +60,7 @@ app.post("/api/ask", async (req, res) => {
       messages: [
         {
           role: "system",
-          content: `
+          content: 
 Ти медичний AI-помічник.
 
 - давай практичні медичні поради
@@ -73,11 +69,11 @@ app.post("/api/ask", async (req, res) => {
 - не призначай рецептурні препарати
 
 Якщо симптоми серйозні — порадь звернутися до лікаря.
-`
+
         },
         {
           role: "user",
-          content: `Симптоми: ${symptoms}`
+          content: Симптоми: ${symptoms}
         }
       ]
     });
@@ -111,6 +107,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(port, "0.0.0.0", () => {
-  console.log(`🚀 Backend працює на порту ${port}`);
+  console.log(🚀 Backend працює на порту ${port});
 });
-
