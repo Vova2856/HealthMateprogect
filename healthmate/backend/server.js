@@ -23,16 +23,14 @@ if (!process.env.OPENAI_API_KEY) {
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || ""
-
 });
 
-
 const frontendPath = path.join(__dirname, "../frontend");
-app.use(express.static(frontendPath));;
+app.use(express.static(frontendPath));
 
 function isMedical(text = "") {
   const keywords = [
-    "бол", "температур", "кашель", "нежить", "горло",
+    "бол", "температур", "кашель", "нежить", "горло",               
     "симптом", "лікар", "ліки", "таблет",
     "тиск", "серце", "живіт", "нудот",
     "голов", "запамороч",
@@ -47,8 +45,8 @@ app.post("/api/ask", async (req, res) => {
   try {
     const { symptoms } = req.body;
 
-   if (!symptoms || typeof symptoms !== "string") {
- {
+    
+    if (!symptoms || typeof symptoms !== "string") {
       return res.status(400).json({ error: "Вкажи симптоми" });
     }
 
@@ -63,7 +61,7 @@ app.post("/api/ask", async (req, res) => {
     }
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4", 
       messages: [
         {
           role: "system",
@@ -85,13 +83,12 @@ app.post("/api/ask", async (req, res) => {
       ]
     });
 
-    const advice =
-      completion.choices?.[0]?.message?.content 
-      "Вибач, я можу відповідати лише на медичні питання.";
+  
+    const advice = completion.choices?.[0]?.message?.content || "Вибач, я можу відповідати лише на медичні питання.";
 
     const histPath = path.join(__dirname, "history.json");
     const hist = fs.existsSync(histPath)
-      ? JSON.parse(fs.readFileSync(histPath, "utf8"))
+      ? JSON.parse(fs.readFileSync(histPath, "utf8"))   
       : [];
 
     hist.push({
@@ -114,5 +111,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(port, "0.0.0.0", () => {
-  console.log(🚀 Backend працює на порту ${port});
+  console.log(`🚀 Backend працює на порту ${port}`);
 });
