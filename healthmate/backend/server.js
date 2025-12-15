@@ -15,7 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const port = process.env.PORT  3000;
+const port = process.env.PORT || 3000;
 
 if (!process.env.OPENAI_API_KEY) {
   console.warn("⚠️ OPENAI_API_KEY не заданий");
@@ -25,9 +25,9 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY  ""
 });
 
-// 👉 шлях до фронтенду
-const frontendPath = path.join(__dirname, "frontend");
-app.use(express.static(frontendPath));
+
+const frontendPath = path.join(__dirname, "../frontend");
+app.use(express.static(frontendPath));;
 
 function isMedical(text = "") {
   const keywords = [
