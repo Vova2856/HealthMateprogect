@@ -45,7 +45,6 @@ app.post("/api/ask", async (req, res) => {
   try {
     const { symptoms } = req.body;
 
-    
     if (!symptoms || typeof symptoms !== "string") {
       return res.status(400).json({ error: "Вкажи симптоми" });
     }
@@ -61,7 +60,7 @@ app.post("/api/ask", async (req, res) => {
     }
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4", 
+      model: "gpt-4",
       messages: [
         {
           role: "system",
@@ -83,12 +82,12 @@ app.post("/api/ask", async (req, res) => {
       ]
     });
 
-  
-    const advice = completion.choices?.[0]?.message?.content || "Вибач, я можу відповідати лише на медичні питання.";
+    const advice =
+      completion.choices?.[0]?.message?.content || "Вибач, я можу відповідати лише на медичні питання.";
 
     const histPath = path.join(__dirname, "history.json");
     const hist = fs.existsSync(histPath)
-      ? JSON.parse(fs.readFileSync(histPath, "utf8"))   
+      ? JSON.parse(fs.readFileSync(histPath, "utf8"))
       : [];
 
     hist.push({
@@ -101,10 +100,11 @@ app.post("/api/ask", async (req, res) => {
 
     res.json({ advice });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Серверна помилка" });
+    console.error(err);  
+    res.status(500).json({ error: "Серверна помилка" });  
   }
 });
+
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
