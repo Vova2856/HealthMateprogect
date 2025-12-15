@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthMate AI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="app">
+  <aside class="sidebar">
+    <h2>Меню</h2>
+    <button id="sendBtn">Надіслати</button>
+    <button id="clearBtn" class="ghost">Очистити текст</button>
+    <button id="copyBtn" class="ghost">Скопіювати історію</button>
+    <button id="settingsBtn" class="ghost">Налаштування</button>
+    <button id="aboutBtn" class="ghost">Про додаток</button>
+  </aside>
+
+  <main class="main-content">
+    <div class="header">
+      <h1>HealthMate <span>AI</span></h1>
+      <p>Твій персональний AI-помічник зі здоров’я</p>
+    </div>
+
+    <div class="card">
+      <label for="userInput">Опиши свої симптоми:</label>
+      <textarea id="userInput" placeholder="Напиши тут..."></textarea>
+    </div>
+
+    <div class="history-card">
+      <h3>Відповідь AI</h3>
+      <div id="chatContainer">
+        <div id="aiTempDiv"></div>
+        <h3>Історія</h3>
+        <ul id="history"></ul>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>© 2025 HealthMate AI</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
