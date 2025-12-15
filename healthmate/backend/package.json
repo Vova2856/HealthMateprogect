@@ -1,12 +1,11 @@
 {
   "name": "healthmate-backend",
-  "version": "1.0.0"
-}
+  "version": "1.0.0",
   "description": "HealthMate — AI медичний помічник",
   "main": "index.js",
   "scripts": {
-  "start": "node healthmate/backend/server.js",
-  }
+    "start": "node healthmate/backend/server.js"
+  },
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
