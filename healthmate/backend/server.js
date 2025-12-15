@@ -8,7 +8,6 @@ import { fileURLToPath } from "url";
 
 dotenv.config();
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -18,50 +17,76 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-
 if (!process.env.OPENAI_API_KEY) {
-  console.error("❌ Не знайдено OPENAI_API_KEY у .env");
-  process.exit(1);
+  console.warn("⚠️ OPENAI_API_KEY не заданий");
 }
 
-
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY || ""
 });
 
+const frontendPath = path.join(__dirname, "frontend");
+app.use(express.static(frontendPath));
 
-app.use(express.static(path.join(__dirname, "..", "frontend")));
-
+function isMedical(text = "") {
+  const keywords = [
+    "бол", "температур", "кашель", "нежить", "горло",
+    "симптом", "лікар", "ліки", "таблет",
+    "тиск", "серце", "живіт", "нудот",
+    "голов", "запамороч",
+    "грип", "covid", "вірус", "інфекц",
+    "алергі", "висип", "шкіра", "рана"
+  ];
+  const lower = text.toLowerCase();
+  return keywords.some(k => lower.includes(k));
+}
 
 app.post("/api/ask", async (req, res) => {
   try {
     const { symptoms } = req.body;
 
-    if (!symptoms) {
+    if (!symptoms || typeof symptoms !== "string") {
       return res.status(400).json({ error: "Вкажи симптоми" });
     }
 
-    
+    if (!isMedical(symptoms)) {
+      return res.json({
+        advice: "Вибач, я можу відповідати лише на медичні питання."
+      });
+    }
+
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({ error: "OPENAI_API_KEY не налаштований" });
+    }
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
           content: `
-Ти медичний помічник. Відповідай лише на медичні питання про симптоми, захворювання, ліки та здоров'я.
-Якщо запит не стосується медицини, відповідай: "Вибач, я можу відповідати лише на медичні питання."
+Ти медичний AI-помічник.
+
+- давай практичні медичні поради
+- пояснюй просто і спокійно
+- не став остаточних діагнозів
+- не призначай рецептурні препарати
+
+Якщо симптоми серйозні — порадь звернутися до лікаря.
 `
         },
-        { role: "user", content: `Симптоми: ${symptoms}` }
+        {
+          role: "user",
+          content: `Симптоми: ${symptoms}`
+        }
       ]
     });
 
     const advice =
-      completion.choices?.[0]?.message?.content || "Помилка AI";
+      completion.choices?.[0]?.message?.content ||
+      "Вибач, я можу відповідати лише на медичні питання.";
 
-    // збереження історії
     const histPath = path.join(__dirname, "history.json");
-
     const hist = fs.existsSync(histPath)
       ? JSON.parse(fs.readFileSync(histPath, "utf8"))
       : [];
@@ -81,6 +106,11 @@ app.post("/api/ask", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`🚀 Backend працює: http://localhost:${port}`);
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
+
+app.listen(port, "0.0.0.0", () => {
+  console.log(`🚀 Backend працює на порту ${port}`);
+});
+

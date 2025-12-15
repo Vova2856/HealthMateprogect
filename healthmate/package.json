@@ -1,9 +1,12 @@
 {
   "name": "healthmate",
+  "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "node backend/server.js"
   },
+<<<<<<< HEAD
   "dependencies": {
     "body-parser": "^2.2.1",
     "cors": "^2.8.5",
@@ -12,3 +15,15 @@
     "openai": "^6.10.0"
   }
 }
+=======
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  }
+}
+
+>>>>>>> ffc6c35e7f4f9f39b350745986c38f7139c0179e
