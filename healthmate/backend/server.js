@@ -17,16 +17,15 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-
 if (!process.env.OPENAI_API_KEY) {
-  console.error("❌ OPENAI_API_KEY не заданий!");
+  console.warn("⚠️ OPENAI_API_KEY не заданий");
 }
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || ""
 });
 
-
+// шлях до фронтенду
 const frontendPath = path.join(__dirname, "../frontend");
 app.use(express.static(frontendPath));
 
@@ -42,7 +41,6 @@ function isMedical(text = "") {
   const lower = text.toLowerCase();
   return keywords.some(k => lower.includes(k));
 }
-
 
 app.post("/api/ask", async (req, res) => {
   console.log("✅ Запит отримано на /api/ask:", req.body);
@@ -67,8 +65,7 @@ app.post("/api/ask", async (req, res) => {
       messages: [
         {
           role: "system",
-          content: 
-Ти медичний AI-помічник.
+          content: Ти медичний AI-помічник.
 
 - давай практичні медичні поради
 - пояснюй просто і спокійно
@@ -76,22 +73,29 @@ app.post("/api/ask", async (req, res) => {
 - не призначай рецептурні препарати
 
 Якщо симптоми серйозні — порадь звернутися до лікаря.
-
         },
-        { role: "user", content: Симптоми: ${symptoms} }
+        {
+          role: "user",
+          content: Симптоми: ${symptoms}
+        }
       ]
     });
 
-    const advice = completion.choices?.[0]?.message?.content
+    const advice =
+      completion.choices?.[0]?.message?.content
       || "Вибач, я можу відповідати лише на медичні питання.";
 
-    // Зберігаємо історію
     const histPath = path.join(__dirname, "history.json");
     const hist = fs.existsSync(histPath)
       ? JSON.parse(fs.readFileSync(histPath, "utf8"))
       : [];
 
-    hist.push({ when: new Date().toISOString(), symptoms, advice });
+    hist.push({
+      when: new Date().toISOString(),
+      symptoms,
+      advice
+    });
+
     fs.writeFileSync(histPath, JSON.stringify(hist, null, 2));
 
     res.json({ advice });
@@ -101,11 +105,9 @@ app.post("/api/ask", async (req, res) => {
   }
 });
 
-
 app.get("*", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
-
 
 app.listen(port, "0.0.0.0", () => {
   console.log(🚀 Backend працює на порту ${port});
