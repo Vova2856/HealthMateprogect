@@ -57,7 +57,7 @@ sendBtn.addEventListener("click", async () => {
   tempAiDiv.textContent = "AI пише...";
 
   try {
-    const res = await fetch("http://localhost:3000/api/ask", {
+    const res = await fetch("https://healthmateprogect-production.up.railway.app", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ symptoms }),
