@@ -145,6 +145,3 @@ aboutBtn.addEventListener("click", () => {
 
 
 
-
-
-
