@@ -47,7 +47,8 @@ app.post("/api/ask", async (req, res) => {
   try {
     const { symptoms } = req.body;
 
-    if (!symptoms  typeof symptoms !== "string") {
+   if (!symptoms || typeof symptoms !== "string") {
+ {
       return res.status(400).json({ error: "Вкажи симптоми" });
     }
 
