@@ -25,8 +25,8 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || ""
 });
 
-// 👉 шлях до фронтенду
-const frontendPath = path.join(__dirname, "frontend");
+
+const frontendPath = path.join(__dirname, "../frontend");
 app.use(express.static(frontendPath));
 
 function isMedical(text = "") {
