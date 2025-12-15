@@ -2,6 +2,13 @@
   "name": "healthmate",
   "private": true,
   "scripts": {
-    "start": "node backend/servers.js"
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "openai": "^6.10.0"
   }
 }
