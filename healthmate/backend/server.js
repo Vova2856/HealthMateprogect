@@ -129,6 +129,8 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
-app.listen(port, () => {
-  console.log(`🚀 Backend працює на порту ${port}`);
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Backend працює на порту ${PORT}`);
 });
+
