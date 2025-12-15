@@ -17,12 +17,13 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-if (!process.env.OPENAI_API_KEY) {
+if (!process.env.OPENAI_API_KEY) { 
   console.warn("⚠️ OPENAI_API_KEY не заданий");
 }
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY  ""
+  apiKey: process.env.OPENAI_API_KEY || ""
+
 });
 
 
