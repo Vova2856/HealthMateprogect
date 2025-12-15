@@ -9,24 +9,24 @@ import { fileURLToPath } from "url";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT  3000;
 
 if (!process.env.OPENAI_API_KEY) {
   console.warn("⚠️ OPENAI_API_KEY не заданий");
 }
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || ""
+  apiKey: process.env.OPENAI_API_KEY  ""
 });
 
-// шлях до фронтенду
-const frontendPath = path.join(__dirname, "../frontend");
+// 👉 шлях до фронтенду
+const frontendPath = path.join(__dirname, "frontend");
 app.use(express.static(frontendPath));
 
 function isMedical(text = "") {
@@ -43,17 +43,17 @@ function isMedical(text = "") {
 }
 
 app.post("/api/ask", async (req, res) => {
-  console.log("✅ Запит отримано на /api/ask:", req.body);
-
   try {
     const { symptoms } = req.body;
 
-    if (!symptoms || typeof symptoms !== "string") {
+    if (!symptoms  typeof symptoms !== "string") {
       return res.status(400).json({ error: "Вкажи симптоми" });
     }
 
     if (!isMedical(symptoms)) {
-      return res.json({ advice: "Вибач, я можу відповідати лише на медичні питання." });
+      return res.json({
+        advice: "Вибач, я можу відповідати лише на медичні питання."
+      });
     }
 
     if (!process.env.OPENAI_API_KEY) {
@@ -65,7 +65,8 @@ app.post("/api/ask", async (req, res) => {
       messages: [
         {
           role: "system",
-          content: Ти медичний AI-помічник.
+          content: `
+Ти медичний AI-помічник.
 
 - давай практичні медичні поради
 - пояснюй просто і спокійно
@@ -73,17 +74,18 @@ app.post("/api/ask", async (req, res) => {
 - не призначай рецептурні препарати
 
 Якщо симптоми серйозні — порадь звернутися до лікаря.
+`
         },
         {
           role: "user",
-          content: Симптоми: ${symptoms}
+          content: `Симптоми: ${symptoms}`
         }
       ]
     });
 
     const advice =
-      completion.choices?.[0]?.message?.content
-      || "Вибач, я можу відповідати лише на медичні питання.";
+      completion.choices?.[0]?.message?.content 
+      "Вибач, я можу відповідати лише на медичні питання.";
 
     const histPath = path.join(__dirname, "history.json");
     const hist = fs.existsSync(histPath)
@@ -100,7 +102,7 @@ app.post("/api/ask", async (req, res) => {
 
     res.json({ advice });
   } catch (err) {
-    console.error("❌ Помилка сервера:", err);
+    console.error(err);
     res.status(500).json({ error: "Серверна помилка" });
   }
 });
