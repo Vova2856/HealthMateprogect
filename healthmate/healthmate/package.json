@@ -1,7 +1,0 @@
-{
-  "name": "healthmate",
-  "private": true,
-  "scripts": {
-    "start": "node backend/servers.js"
-  }
-}
